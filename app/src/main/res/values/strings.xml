@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">My Calculator</string>
+    <string name="txtBlank"></string>
+    <string name="txt1">1</string>
+    <string name="txt2">2</string>
+    <string name="txt3">3</string>
+    <string name="txt4">4</string>
+    <string name="txt5">5</string>
+    <string name="txt6">6</string>
+    <string name="txt7">7</string>
+    <string name="txt8">8</string>
+    <string name="txt9">9</string>
+    <string name="txt0">0</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="mult">*</string>
+    <string name="divi">/</string>
+    <string name="equals">=</string>
+    <string name="clear">C</string>
+    <string name="dec">.</string>
+    <string name="negpos">- / +</string>
+    <string name="remdig">&#x2190;</string>
+
+
+
+</resources>
+
