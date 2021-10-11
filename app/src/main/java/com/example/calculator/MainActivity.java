@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String numString = "";
     private String currentAnsStr = "";
-    private boolean lastWasOp = false;
+    private boolean lastBtnWasOp = false;
+    private boolean displayIsAns = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,9 +198,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updateStringNumber(String num){
+    private void updateStringNumberNDisplay(String num){
         //Add number to string of numbers
         numString += num;
+    }
+
+    private void updateDisplayWStringNum(){
+        displayTV.setText(numString);
     }
 
     private void chooseDigit(String num){
@@ -213,24 +218,24 @@ public class MainActivity extends AppCompatActivity {
         else if (numString.equals("") && !currentAnsStr.equals("") && !calcClass.rightNumIsSet()){
             clearNums();
         }
-        updateStringNumber(num);
+        updateStringNumberNDisplay(num);
         updateDisplayWStringNum();
-        lastWasOp = false;
+        lastBtnWasOp = false;
     }
 
     private void checkOpAndCalculate(String op){
         //If the last entry was a different operator, change operator in memory (if same operator, do nothing)
-        if (lastWasOp && !(calcClass.getOperator().equals(op))){
-            updateHistory(calcClass.getLeftNum() + " " + op);
+        if (lastBtnWasOp && !(calcClass.getOperator().equals(op))){
+            updateHistoryWString(calcClass.getLeftNum() + " " + op);
             calcClass.setOperator(op);
-            lastWasOp = true;
+            lastBtnWasOp = true;
         }
         //If last entry was not an operator, proceed with operator logic
-        else if (!lastWasOp) {
+        else if (!lastBtnWasOp) {
             //Check if the left digit has been set yet; if not, set it to current number string
             if (!calcClass.leftNumIsSet()) {
                 calcClass.setLeftNum(numString);
-                updateHistory(numString + " " + op);
+                updateHistoryWString(numString + " " + op);
             }
             //If left number has been set but no operator is in memory, the last operation was an equals; just need operator & to change displays
             else if (calcClass.leftNumIsSet() && !calcClass.operatorIsSet()) {
@@ -240,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             //If left number has been set and operator has been set, set right number to current string
             else if (calcClass.leftNumIsSet()) {
                 calcClass.setRightNum(numString);
-                updateHistory(numString + " " + op);
+                updateHistoryWString(numString + " " + op);
             }
             //If both the left and right operator have been set, perform calculation using operator already in memory
             if (calcClass.leftNumIsSet() && calcClass.rightNumIsSet()) {
@@ -248,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             }
             //Finally, always set the operator and reset the number string
             setOperatorAndReset(op);
-            lastWasOp = true;
+            lastBtnWasOp = true;
         }
     }
 
@@ -266,7 +271,9 @@ public class MainActivity extends AppCompatActivity {
         else {
             //Set the answer as the new left number
             calcClass.setLeftNum(currentAnsStr);
+            //Reset right number to null
             calcClass.setRightNum(null);
+            //Note: do not reset operator in case of rolling equation
         }
     }
 
@@ -282,36 +289,63 @@ public class MainActivity extends AppCompatActivity {
                     calcClass.setRightNum(numString);
                     //Calculate answer
                     getAnswer();
-                    //Reset values
+                    //Reset number string and operator
                     numString = "";
                     calcClass.setOperator(null);
-                    lastWasOp = false;
+                    lastBtnWasOp = false;
                 }
             }
         }
     }
 
     private void clearNums(){
+        //Reset everything
         calcClass.setRightNum(null);
         calcClass.setLeftNum(null);
+        calcClass.setOperator(null);
         numString = "";
         currentAnsStr = "";
         updateDisplayWStringNum();
-        updateHistory("");
-        lastWasOp = false;
+        updateHistoryWString("");
+        lastBtnWasOp = false;
     }
 
     private void useDecimal(){
         String currentNumString = displayTV.getText().toString();
+        //If nothing has been entered yet, prompt user with 0.
         if (currentNumString.isEmpty() || numString.isEmpty()){
             chooseDigit("0.");
         }
         else {
+            //If the current string does not already contain a decimal, enter one
             if (!currentNumString.contains(".")){
                 chooseDigit(".");
             }
         }
     }
+
+    private void removeDigit(){
+        //Get string currently on screen
+        String currentNumString = displayTV.getText().toString();
+        //If string is not empty, continue
+        if (!currentNumString.isEmpty()) {
+            String shortString;
+            //Remove last digit from string using substring
+            shortString = currentNumString.substring(0, currentNumString.length() - 1);
+            //Check if what is on display is actually an answer; if so, apply result to answer string
+            if (!currentAnsStr.isEmpty() && !calcClass.operatorIsSet() && !calcClass.rightNumIsSet()) {
+                currentAnsStr = shortString;
+                calcClass.setLeftNum(currentAnsStr);
+                updateDisplayWAnswer();
+            }
+            //In all other cases, apply result to number string
+            else {
+                numString = shortString;
+                updateDisplayWStringNum();
+            }
+        }
+    }
+
 
     private void toggleNegative(){
         //Get string currently on screen
@@ -358,31 +392,11 @@ public class MainActivity extends AppCompatActivity {
         return posNum;
     }
 
-    private void removeDigit(){
-        String currentNumString = displayTV.getText().toString();
-        if (!currentNumString.isEmpty()) {
-            String shortString;
-            shortString = currentNumString.substring(0, numString.length() - 1);
-            if (!currentAnsStr.isEmpty() && !calcClass.operatorIsSet() && !calcClass.rightNumIsSet()) {
-                currentAnsStr = shortString;
-                updateDisplayWAnswer();
-            }
-            else {
-                numString = shortString;
-                updateDisplayWStringNum();
-            }
-        }
-    }
-
-    private void updateDisplayWStringNum(){
-        displayTV.setText(numString);
-    }
-
     private void updateDisplayWAnswer(){
         displayTV.setText(currentAnsStr);
     }
 
-    private void updateHistory(String oldString){
+    private void updateHistoryWString(String oldString){
         historyTV.setText(oldString);
     }
 
