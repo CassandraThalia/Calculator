@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updateStringNumberNDisplay(String num){
+    private void updateStringNumber(String num){
         //Add number to string of numbers
         numString += num;
     }
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         else if (numString.equals("") && !currentAnsStr.equals("") && !calcClass.rightNumIsSet()){
             clearNums();
         }
-        updateStringNumberNDisplay(num);
+        updateStringNumber(num);
         updateDisplayWStringNum();
         lastBtnWasOp = false;
     }
@@ -376,6 +376,10 @@ public class MainActivity extends AppCompatActivity {
                     updateDisplayWStringNum();
                 }
             }
+        }
+        //If the current display string is empty, start number prompt with -
+        else {
+            chooseDigit("-");
         }
     }
 
