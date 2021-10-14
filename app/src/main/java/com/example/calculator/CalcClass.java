@@ -88,11 +88,8 @@ public class CalcClass {
             answer = String.format("%.0f", dAnswer);
         }
         else{
-            answer = Double.toString(dAnswer);
+            answer = String.format("%.10f", dAnswer);
         }
         return answer;
     }
-
-
-
 }

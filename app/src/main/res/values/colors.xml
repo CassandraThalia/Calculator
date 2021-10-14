@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="medgrey">#535353</color>
+    <color name="greytransp">#9A1C1C1C</color>
+    <color name="lightgrey">#AFAFAF</color>
     <color name="darkpink">#787878</color>
     <color name="lightpink">#CC7E98</color>
     <color name="buttons">#272727</color>

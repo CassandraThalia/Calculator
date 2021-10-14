@@ -24,9 +24,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:gravity="center_vertical"
                 android:layout_span="4"
-                android:textSize="35sp"
-                android:textColor="@color/lightpink"/>
+                android:textSize="20sp"
+                android:textColor="@color/lightgrey"
+                android:background="@color/greytransp" />
         </TableRow>
 
         <TableRow
@@ -38,10 +42,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
                 android:layout_margin="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:gravity="end"
                 android:layout_span="4"
-                android:textSize="90sp"
+                android:textSize="85sp"
                 android:textColor="@color/white"
-                android:textAlignment="textEnd"/>
+                android:background="@color/greytransp" />
         </TableRow>
 
         <TableRow

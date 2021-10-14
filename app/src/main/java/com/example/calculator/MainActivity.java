@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private String numString = "";
     private String currentAnsStr = "";
     private boolean lastBtnWasOp = false;
-    private boolean displayIsAns = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,14 +223,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkOpAndCalculate(String op){
+        String currentNumString = displayTV.getText().toString();
         //If the last entry was a different operator, change operator in memory (if same operator, do nothing)
         if (lastBtnWasOp && !(calcClass.getOperator().equals(op))){
             updateHistoryWString(calcClass.getLeftNum() + " " + op);
             calcClass.setOperator(op);
             lastBtnWasOp = true;
         }
-        //If last entry was not an operator, proceed with operator logic
-        else if (!lastBtnWasOp) {
+        //If last entry was not an operator and the current num string is not empty, proceed with operator logic
+        else if (!lastBtnWasOp && !currentNumString.isEmpty()) {
             //Check if the left digit has been set yet; if not, set it to current number string
             if (!calcClass.leftNumIsSet()) {
                 calcClass.setLeftNum(numString);
@@ -337,6 +337,9 @@ public class MainActivity extends AppCompatActivity {
                 currentAnsStr = shortString;
                 calcClass.setLeftNum(currentAnsStr);
                 updateDisplayWAnswer();
+                if (currentAnsStr.equals("")){
+                    clearNums();
+                }
             }
             //In all other cases, apply result to number string
             else {
@@ -364,6 +367,9 @@ public class MainActivity extends AppCompatActivity {
                     //Because the current answer is also the current left number, update that in memory
                     calcClass.setLeftNum(currentAnsStr);
                     updateDisplayWAnswer();
+                }
+                else if (lastBtnWasOp){
+                    chooseDigit("-");
                 }
                 //In all other cases, apply neg/pos to number string
                 else {
